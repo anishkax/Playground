@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useId } from "react";
 import {
   LayoutDashboard,
   ArrowLeftRight,
@@ -96,7 +96,8 @@ const CATEGORY_CONFIG: Record<
 };
 
 // ─── Sparkline SVG ────────────────────────────────────────────────────────────
-function Sparkline({ points, uid }: { points: number[]; uid: string }) {
+function Sparkline({ points }: { points: number[] }) {
+  const uid = useId();
   const { linePath, areaPath } = useMemo(() => {
     const W = 120, H = 36, PAD = 3;
     const min = Math.min(...points);
@@ -300,7 +301,6 @@ function StatCard({
   delta,
   trend,
   spark,
-  sparkUid,
   icon: CardIcon,
 }: {
   title: string;
@@ -308,7 +308,6 @@ function StatCard({
   delta: string;
   trend: "up" | "down" | "flat";
   spark: number[];
-  sparkUid: string;
   icon: LucideIcon;
 }) {
   const DeltaIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
@@ -343,7 +342,7 @@ function StatCard({
           </span>
         </div>
         <div className="mt-1 shrink-0 opacity-60 transition-opacity group-hover:opacity-100">
-          <Sparkline points={spark} uid={sparkUid} />
+          <Sparkline points={spark} />
         </div>
       </div>
     </div>
@@ -562,7 +561,6 @@ export default function App() {
                     delta="2.4% this month"
                     trend="up"
                     spark={SPARKLINES.netWorth}
-                    sparkUid="netWorth"
                     icon={Wallet}
                   />
                 </div>
@@ -573,7 +571,6 @@ export default function App() {
                     delta="3.1% vs last month"
                     trend="up"
                     spark={SPARKLINES.income}
-                    sparkUid="income"
                     icon={TrendingUp}
                   />
                 </div>
@@ -584,7 +581,6 @@ export default function App() {
                     delta="1.8% vs last month"
                     trend="down"
                     spark={SPARKLINES.spending}
-                    sparkUid="spending"
                     icon={BarChart2}
                   />
                 </div>
