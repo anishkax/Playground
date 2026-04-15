@@ -1,1 +1,5 @@
-<div>Symbol Page</div>
+{
+  "name": "playground",
+  "private": true,
+  "description": "Playground repository"
+}
